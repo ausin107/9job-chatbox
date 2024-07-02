@@ -4,7 +4,11 @@ import Navbar from './Components/Navbar'
 import chatbox_icon from './assest/icon.png'
 import Avatar from './Components/Avatar';
 
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+import data from '@emoji-mart/data'
+import Picker from '@emoji-mart/react'
+
+
+import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI('AIzaSyBxBhH8nPk2Hra3OSHjcyHqbvbHMv_8f1A');
 
 
@@ -13,6 +17,7 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [typingMessage, setTypingMessage] = useState(null);
   const [input, setInput] = useState('');
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const sendMessage = async () => {
     if (input.trim()) {
@@ -47,6 +52,11 @@ function App() {
         setTypingMessage(null);
       }
     }, 10);
+  };
+
+  const addEmoji = (emoji) => {
+    setShowEmojiPicker(false)
+    setInput(input + emoji.native);
   };
 
 
@@ -142,6 +152,7 @@ function App() {
               justifyContent: 'center',
             }}>
             <div className="chat-footer">
+              <button onClick={() => setShowEmojiPicker(!showEmojiPicker)}>😊</button>
               <input
                 type="text"
                 value={input}
@@ -149,6 +160,9 @@ function App() {
                 onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
               />
               <button onClick={sendMessage}>Send</button>
+              {showEmojiPicker && (
+                <Picker data={data} onEmojiSelect={addEmoji} />
+              )}
             </div>
           </div>
         </div>

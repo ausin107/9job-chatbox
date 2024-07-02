@@ -48,3 +48,8 @@
     display: inline-flex;
     align-items: center;
 }
+
+.emoji-picker {
+    position: absolute;
+    bottom: 0;
+}
