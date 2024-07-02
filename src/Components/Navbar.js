@@ -2,7 +2,7 @@ import logo from '../assest/logo.png'
 
 function Navbar() {
   return (
-    <navbar
+    <div
       className='navbar'
       style={{
         width: '100vw',
@@ -13,7 +13,7 @@ function Navbar() {
         overflow: 'hidden',
       }}>
       <img src={logo} alt='Logo' />
-    </navbar>
+    </div>
   )
 }
 

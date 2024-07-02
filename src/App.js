@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import './App.css'
 import Navbar from './Components/Navbar'
 import chatbox_icon from './assest/icon.png'
@@ -37,7 +36,7 @@ function App() {
           style={{
             position: 'fixed',
             width: '25rem',
-            height: '40rem',
+            height: '80%',
             borderRadius: '15px',
             backgroundColor: '#ffffff',
             right: '6rem',
@@ -68,7 +67,19 @@ function App() {
             </div>
             <div style={{ fontWeight: 'bold', fontSize: '1.5rem', marginLeft: '1rem' }}>ChatGPT</div>
           </div>
-          <div></div>
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              width: '100%',
+              height: '4rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <input style={{ padding: '0.5rem 0', paddingLeft: '0.1rem', paddingRight: '8rem', marginRight: '1rem' }} />
+            <button>Send</button>
+          </div>
         </div>
       </main>
     </div>
