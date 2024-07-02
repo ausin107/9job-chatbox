@@ -84,6 +84,12 @@
   align-items: center;
   justify-content: center;
   border: 1px black solid;
+  overflow: 'hidden'
+}
+
+.send-icon {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .messages {
@@ -95,22 +101,28 @@
   max-height: 80%;
 }
 
-/* .chat-footer {
-  padding: 0.5rem 8rem 0 0.1rem;
-  margin-right: 1rem;
-} */
+.chat-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} 
 .chat-input {
-  padding: 0.5rem 0.2rem;
-  width: 14rem;
+  padding: 0.5rem 0.8rem;
   margin-right: 1rem;
+  border-radius: 1rem;
+  font-size: 1rem;
+  width: 16rem;
 }
 .chat-btn {
   padding: 0.5rem;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
 }
 .message {
   max-width: 200px;
   border-radius: 1rem;
-  margin: 1rem;
+  margin: 0.3rem;
   padding: 1rem;
 }
 
@@ -177,4 +189,28 @@
   display: flex;
   align-items: center;
   margin-top: 1rem;
+}
+
+em-emoji-picker {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.emoji-button {
+    background-color: transparent;
+    border-radius: 3px;
+    width: 2rem;
+    height: 2rem;
+    font-size: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    margin-right: 0.5rem;
+}
+
+.emoji-button:hover {
+    background-color: transparent;
+    cursor: pointer;
 }
