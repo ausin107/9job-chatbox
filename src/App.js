@@ -152,7 +152,7 @@ function App() {
               justifyContent: 'center',
             }}>
             <div className="chat-footer">
-              <button onClick={() => setShowEmojiPicker(!showEmojiPicker)}>😊</button>
+              <button className='emoji-button' onClick={() => setShowEmojiPicker(!showEmojiPicker)}>🙂</button>
               <input
                 type="text"
                 value={input}

@@ -49,7 +49,24 @@
     align-items: center;
 }
 
-.emoji-picker {
+em-emoji-picker {
     position: absolute;
     bottom: 0;
+}
+
+.emoji-button {
+    background-color: white;
+    border-radius: 3px;
+    width: 2rem;
+    height: 2rem;
+    font-size: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+}
+
+.emoji-button:hover {
+    background-color: lightgray;
+    cursor: pointer;
 }
