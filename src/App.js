@@ -1,7 +1,55 @@
 import './App.css'
+import React, { useState } from 'react';
 import Navbar from './Components/Navbar'
 import chatbox_icon from './assest/icon.png'
+import Avatar from './Components/Avatar';
+
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const genAI = new GoogleGenerativeAI('AIzaSyBxBhH8nPk2Hra3OSHjcyHqbvbHMv_8f1A');
+
+
 function App() {
+
+  const [messages, setMessages] = useState([]);
+  const [typingMessage, setTypingMessage] = useState(null);
+  const [input, setInput] = useState('');
+
+  const sendMessage = async () => {
+    if (input.trim()) {
+      setMessages([...messages, { sender: 'user', text: input }]);
+      setInput('');
+      
+      try {
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
+        const prompt = input;
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
+        const botMessage = text.trim();
+        displayTypingEffect(botMessage);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  };
+
+  const displayTypingEffect = (text) => {
+    let index = 0;
+    setTypingMessage('');
+
+    const typingInterval = setInterval(() => {
+      setTypingMessage((prev) => prev + text[index]);
+      index++;
+
+      if (index === text.length) {
+        clearInterval(typingInterval);
+        setMessages((prevMessages) => [...prevMessages, { sender: 'bot', text }]);
+        setTypingMessage(null);
+      }
+    }, 10);
+  };
+
+
   return (
     <div className='App' style={{ overflow: 'hidden' }}>
       <Navbar />
@@ -52,21 +100,37 @@ function App() {
               display: 'flex',
               alignItems: 'center',
             }}>
-            <div
-              style={{
-                width: '3rem',
-                height: '3rem',
-                borderRadius: '50%',
-                background: '#ffffff',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginLeft: '1rem',
-              }}>
-              <div>A</div>
-            </div>
+            <Avatar width='3rem' height='3rem' margin='0 0 0 1rem' />
             <div style={{ fontWeight: 'bold', fontSize: '1.5rem', marginLeft: '1rem' }}>ChatGPT</div>
           </div>
+
+          <div className="messages">
+            {messages.map((msg, index) => (
+              msg.sender === 'bot' ? (
+                <div key={index} className="message-wrapper">
+                  
+                  <Avatar width='2.5rem' height='2.5rem' alignSelf='flex-start' margin='1rem 0 0 0' />
+                  <div className={`message ${msg.sender}`}> 
+                    {msg.text}
+                  </div>
+                </div>
+              ) : (
+                <div key={index} className={`message ${msg.sender}`}>
+                  {msg.text}
+                </div>
+              )
+            ))
+            }
+            {typingMessage && (
+              <div className="message-wrapper">
+                <Avatar width='2.5rem' height='2.5rem' alignSelf='flex-start' margin='1rem 0 0 0' />
+                <div className="message bot" style={{alignSelf: 'flex-start'}}>
+                  {typingMessage}
+                </div>
+              </div>
+            )}
+          </div>
+
           <div
             style={{
               position: 'absolute',
@@ -77,8 +141,15 @@ function App() {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <input style={{ padding: '0.5rem 0', paddingLeft: '0.1rem', paddingRight: '8rem', marginRight: '1rem' }} />
-            <button>Send</button>
+            <div className="chat-footer">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+              />
+              <button onClick={sendMessage}>Send</button>
+            </div>
           </div>
         </div>
       </main>

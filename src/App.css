@@ -2,3 +2,49 @@
 }
 .navbar-child {
 }
+
+.avatar{
+    border-radius: 50%;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px black solid;
+}
+
+.messages {
+    flex-grow: 1;
+    padding: 1rem;
+    overflow-y: auto; 
+    display: flex;
+    flex-direction: column; 
+    max-height:80%; 
+}
+
+.chat-footer{
+    padding: 0.5rem 8rem 0 0.1rem;
+    margin-right: 1rem;
+}
+
+.message{
+    max-width: 200px;
+    border-radius: 1rem;
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.message.user {
+    background-color: #f4f4f4;
+    align-self: flex-end;
+    text-align: right;
+}
+
+.message.bot {
+    background-color: #dcdcdc;
+    align-self: flex-start;
+}
+
+.message-wrapper {
+    display: inline-flex;
+    align-items: center;
+}
