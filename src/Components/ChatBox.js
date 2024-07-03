@@ -25,7 +25,8 @@ const GetHistory = async () => {
   });
 
   if (!response.ok) {
-    throw new Error('Network response was not ok');
+    console.error(response.text)
+    return [];
   }
   const responseData = await response.json();
   return responseData.data
@@ -42,7 +43,7 @@ const SaveHistory = async (dataSave) => {
   });
 
   if (!response.ok) {
-    throw new Error('Network response was not ok');
+    console.error(response.text)
   }
 }
 
@@ -70,6 +71,7 @@ function ChatBox() {
       setIsLogin(true);
       const handle = async () => {
       const history = await GetHistory();
+        
       setMessages(history);
     }
     handle();
