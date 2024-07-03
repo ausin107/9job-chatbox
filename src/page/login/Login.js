@@ -22,7 +22,7 @@ const LoginPage = () => {
     setLoading(true)
 
     try {
-      const response = await fetch('http://localhost:3001/v1/api/auth/login', {
+      const response = await fetch('https://backend-chatbot-khkf.onrender.com/v1/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

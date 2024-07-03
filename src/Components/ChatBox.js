@@ -16,7 +16,7 @@ import runChat from '../config/gemini'
 import handleFileToText from '../lib/handleFileToText'
 
 const GetHistory = async () => { 
-  const response = await fetch('http://localhost:3001/v1/api/history', {
+  const response = await fetch('https://backend-chatbot-khkf.onrender.com/v1/api/history', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ const GetHistory = async () => {
 }
 
 const SaveHistory = async (dataSave) => { 
-  const response = await fetch('http://localhost:3001/v1/api/history/save', {
+  const response = await fetch('https://backend-chatbot-khkf.onrender.com/v1/api/history/save', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
