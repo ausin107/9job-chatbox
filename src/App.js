@@ -50,13 +50,12 @@ function App() {
     const typingInterval = setInterval(() => {
       setTypingMessage((prev) => prev + text[index])
       index++
-
       if (index === text.length) {
         clearInterval(typingInterval)
         setMessages((prevMessages) => [...prevMessages, { sender: 'bot', text }])
         setTypingMessage(null)
       }
-    }, 10)
+    }, 30)
   }
   const handlShowChatBox = () => {
     setSow(!isShow)
