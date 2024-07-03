@@ -16,7 +16,7 @@ const SignUpPage = () => {
         setError('Please fill in both fields.');
         return;
     }
-    if (confirmPassword != password) {
+    if (confirmPassword !== password) {
         setError('Password and confirm password is not matching');
     }
 
@@ -47,9 +47,10 @@ const SignUpPage = () => {
     <div className="login-container">
       <h1>Signup</h1>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
+        <div className="login-form-group">
+          <label className='login-label' htmlFor="email">Email</label>
           <input
+            className='login-input'
             type="email"
             id="email"
             value={email}
@@ -57,9 +58,10 @@ const SignUpPage = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="login-form-group">
           <label htmlFor="password">Password</label>
           <input
+            className='login-input'
             type="password"
             id="password"
             value={password}
@@ -67,9 +69,10 @@ const SignUpPage = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="login-form-group">
           <label htmlFor="password">Confirm Password</label>
           <input
+            className='login-input'
             type="password"
             id="password"
             value={confirmPassword}
@@ -77,9 +80,9 @@ const SignUpPage = () => {
             required
           />
         </div>
-        {error && <p className="error-message">{error}</p>}
-        <button type="submit" disabled={loading}>
-          {loading ? 'Logging in...' : 'Login'}
+        {error && <p className="login-error-message">{error}</p>}
+        <button className='login-button' type="submit" disabled={loading}>
+          {loading ? 'Signning in...' : 'Sign up'}
         </button>
       </form>
     </div>

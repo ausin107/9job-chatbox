@@ -1,5 +1,5 @@
 import './App.css'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import chatbox_icon from './assest/icon.png'
 import send_icon from './assest/send.png'
 import chatbox from './assest/chatbot.png'
@@ -16,6 +16,38 @@ import Picker from '@emoji-mart/react'
 import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI('AIzaSyBxBhH8nPk2Hra3OSHjcyHqbvbHMv_8f1A');
 
+const GetHistory = async () => { 
+  const response = await fetch('http://localhost:3001/v1/api/history', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': localStorage.getItem('token')
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  const responseData = await response.json();
+  return responseData.data
+}
+
+const SaveHistory = async (dataSave) => { 
+  const response = await fetch('http://localhost:3001/v1/api/history/save', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': localStorage.getItem('token')
+    },
+    body: JSON.stringify(dataSave),
+  });
+
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  const responseData = await response.json();
+}
+
 function App() {
   const [messages, setMessages] = useState([])
   const [typingMessage, setTypingMessage] = useState(null)
@@ -24,10 +56,29 @@ function App() {
   const [isLoading, setLoading] = useState(false)
   const chatboxRef = useRef()
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [isLogin, setIsLogin] = useState(false)
+
+  // get history from backend 
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      setIsLogin(true)
+    }
+    
+    const handle = async () => {
+      const history = await GetHistory();
+      setMessages(history)
+    }
+    if (isLogin) {
+      handle();
+    }
+  }, [])
 
   const sendMessage = async () => {
     if (input.trim()) {
       setMessages([...messages, { sender: 'user', text: input }])
+      if (isLogin) {
+        await SaveHistory({ sender: 'user', text: input })
+      }
       setInput('')
       setLoading(true)
       try {
@@ -46,13 +97,16 @@ function App() {
   }
   const displayTypingEffect = (text) => {
     let index = 0
-    setTypingMessage('')
-    const typingInterval = setInterval(() => {
+    setTypingMessage(text[0]);
+    const typingInterval = setInterval(async () => {
       setTypingMessage((prev) => prev + text[index])
       index++
       if (index === text.length) {
         clearInterval(typingInterval)
         setMessages((prevMessages) => [...prevMessages, { sender: 'bot', text }])
+        if (isLogin) {
+          await SaveHistory({ sender: 'bot', text })
+        }
         setTypingMessage(null)
       }
     }, 30)
