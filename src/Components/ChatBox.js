@@ -82,11 +82,11 @@ function ChatBox() {
 
   const sendMessage = async () => {
     const supportSendMessage = async (text) => {
+      setInput('');
       setMessages([...messages, { sender: 'user', text }]);
       if (isLogin) {
         await SaveHistory({ sender: 'user', text });
       }
-      setInput('');
       setLoading(true);
     };
   
@@ -138,7 +138,7 @@ function ChatBox() {
 
   const handleSize = () => {
     setIsFullWidth(!isFullWidth);
-    isFullWidth ? chatboxRef.current.classList.add('full-width') : chatboxRef.current.classList.remove('full-width')
+    !isFullWidth ? chatboxRef.current.classList.add('full-width') : chatboxRef.current.classList.remove('full-width')
   };
   
   return (
