@@ -4,6 +4,7 @@ import chatbox_icon from '../assest/icon.png'
 import send_icon from '../assest/send.png'
 import chatbox from '../assest/chatbot.png'
 import user_image from '../assest/user.jpeg'
+import maximize from '../assest/maximize.png'
 
 import Avatar from './Avatar'
 import Typing from './Typing'
@@ -14,6 +15,7 @@ import Picker from '@emoji-mart/react'
 import runChat from '../config/gemini'
 
 import handleFileToText from '../lib/handleFileToText'
+
 
 const GetHistory = async () => { 
   const response = await fetch('https://backend-chatbot-khkf.onrender.com/v1/api/history', {
@@ -55,6 +57,7 @@ function ChatBox() {
   const [isLoading, setLoading] = useState(false)
   const [file, setFile] = useState('')
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
+  const [isFullWidth, setIsFullWidth] = useState(false);
   const chatboxRef = useRef()
   const inputFileRef = useRef()
   const addFileRef = useRef()
@@ -90,7 +93,7 @@ function ChatBox() {
     const processResponse = async (inputText) => {
       const response = await runChat(inputText);
       setLoading(false);
-      displayTypingEffect(response.trim());
+      displayTypingEffect(response);
     };
   
     if (file) {
@@ -114,16 +117,16 @@ function ChatBox() {
 
       if (index === text.length) {
         clearInterval(typingInterval)
+        setTypingMessage(null)
         setMessages((prevMessages) => [...prevMessages, { sender: 'bot', text }])
         if (isLogin) {
           await SaveHistory({ sender: 'bot', text })
         }
-        setTypingMessage(null)
       }
     }, 10)
   }
 
-  const handlShowChatBox = () => {
+  const handleShowChatBox = () => {
     setSow(!isShow)
     !isShow ? chatboxRef.current.classList.add('active') : chatboxRef.current.classList.remove('active')
   }
@@ -132,16 +135,22 @@ function ChatBox() {
     setShowEmojiPicker(false)
     setInput(input + emoji.native)
   }
+
+  const handleSize = () => {
+    setIsFullWidth(!isFullWidth);
+    isFullWidth ? chatboxRef.current.classList.add('full-width') : chatboxRef.current.classList.remove('full-width')
+  };
   
   return (
     <>
-      <div className='chatbox-icon-container' onClick={handlShowChatBox}>
+      <div className='chatbox-icon-container' onClick={handleShowChatBox}>
         <img src={chatbox_icon} alt='Icon' className='chatbox-icon' />
       </div>
       <div ref={chatboxRef} className='chatbox'>
         <div className='chatbox-nav'>
           <Avatar width='3rem' height='3rem' margin='0 0 0 1rem' image={user_image} />
           <div className='chatbox-nav-text'>ChatGPT</div>
+          <img className='chatbox-nav-size' onClick={handleSize} src={maximize} alt='Logo' />
         </div>
         <div className='messages'>
           {messages.map((msg, index) =>
